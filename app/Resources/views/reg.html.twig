@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block navbar %}
+    <ul class="nav">
+        <li><a href="/">Главная</a></li>
+        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') == '' %}
+            <li><a href="/login">Авторизация</a></li>
+            <li class="active"><a href="/reg">Регистрация</a></li>
+        {% endif %}
+    </ul>
+{% endblock %}
+
+{% block body %}
+    <div class="span4"></div>
+    <div class="span8">
+        <form action="/createUser" method="post" class="form-horizontal">
+            <div class="control-group">
+                <b>Регистрация</b>
+            </div>
+            <div class="control-group">
+                <input type="text" id="inputLogin" name="username" placeholder="Логин" data-cip-id="inputLogin"
+                       autocomplete="off">
+            </div>
+            <div class="control-group error">
+                <input type="password" id="inputPassword" name="password" placeholder="Пароль"
+                       data-cip-id="inputPassword">
+                <span class="help-inline">Текст ошибки</span>
+            </div>
+            <div class="control-group error">
+                <input type="password" id="inputPassword2" name="password" placeholder="Повторите пароль"
+                       data-cip-id="inputPassword2">
+                <span class="help-inline">Текст ошибки</span>
+            </div>
+            <div class="control-group">
+                <button type="submit" class="btn btn-primary">Отправить</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

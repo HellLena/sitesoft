@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block navbar %}
+    <ul class="nav">
+        <li><a href="/">Главная</a></li>
+        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') == '' %}
+            <li><a href="/login">Авторизация</a></li>
+            <li class="active"><a href="/reg">Регистрация</a></li>
+        {% endif %}
+    </ul>
+{% endblock %}
+
+{% block body %}
+    <div class="span2"></div>
+    <div class="span8">
+
+        <h3>Ура!</h3>
+
+        <p>
+            Поздравляем! Вы успешно зарегистрировались.
+        </p>
+
+        <p>
+            Воспользуйтесь <a href="#">формой авторизации</a> чтобы войти на сайт под своей учетной записью
+        </p>
+    </div>
+{% endblock %}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Сайтсофт{% endblock %}</title>
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" />
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-inner">
+            <a class="brand" href="#">Сайтсофт</a>
+            {% block navbar %}
+                <ul class="nav">
+                    <li class="active"><a href="/">Главная</a></li>
+                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') == '' %}
+                        <li><a href="/login">Авторизация</a></li>
+                        <li><a href="/reg">Регистрация</a></li>
+                    {% endif %}
+                </ul>
+            {% endblock %}
+
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                <ul class="nav pull-right">
+                    <li><a>{{ app.user.username }}</a></li>
+                    <li><a href="/logout">Выход</a></li>
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        {% block body %}{% endblock %}
+    </div>
+
+    {% block javascripts %}
+        <script src="http://code.jquery.com/jquery.js"></script>
+        <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    {% endblock %}
+</body>
+</html>
