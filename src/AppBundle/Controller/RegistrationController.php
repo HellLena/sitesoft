@@ -32,28 +32,26 @@ class RegistrationController extends Controller
                     ->findOneBy(array('username' => $user->getUsername()))) {
                     $response['id'] = "#user_username";
                     $response['error'] = 'Пользователь с таким логином существует';
-                    return new JsonResponse($response);
+                } else {
+                    // Encode the password (you could also do this via Doctrine listener)
+                    $password = $this->get('security.password_encoder')
+                        ->encodePassword($user, $user->getPlainPassword());
+                    $user->setPassword($password);
+
+                    // save the User
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($user);
+                    $em->flush();
+
+                    // ... do any other work - like send them an email, etc
+                    // maybe set a "flash" success message for the user
+                    $response['url'] = $this->get('router')->generate('reg_success');
                 }
-
-                // Encode the password (you could also do this via Doctrine listener)
-                $password = $this->get('security.password_encoder')
-                    ->encodePassword($user, $user->getPlainPassword());
-                $user->setPassword($password);
-
-                // save the User
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($user);
-                $em->flush();
-
-                // ... do any other work - like send them an email, etc
-                // maybe set a "flash" success message for the user
-                $response['url'] = $this->get('router')->generate('reg_success');
-                return new JsonResponse($response);
             } else {
                 $response['id'] = "#user_plainPassword_second";
                 $response['error'] = "Пароли не совпадают";
-                return new JsonResponse($response);
             }
+            return new JsonResponse($response);
         }
 
         return $this->render(
