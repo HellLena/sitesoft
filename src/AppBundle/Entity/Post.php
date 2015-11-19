@@ -54,7 +54,7 @@ class Post {
     }
 
     public function setPost($post){
-        $this->post = $post;
+        $this->post = strip_tags($post);
     }
 
     public function getPost(){

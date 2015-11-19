@@ -3,8 +3,8 @@ $(document).ready(function(){
         e.preventDefault();
         var form = $(this);
         var values = getFormValues(form);
-
         var form_name = form.attr('name');
+
         if(form_name == 'user') {
             form.find("div").removeClass("error");
             form.find(".help-inline").text('');
@@ -12,20 +12,26 @@ $(document).ready(function(){
             $(".alert-error").css("display","none").text('');
         }
 
-        $.post(form.attr('action'), values, function(response){
-            if(response['error']){
-                var input = $(response['id']);
-                input.parent('div').addClass('error');
-                input.next('span').text(response['error']);
-            } else if(form_name == 'user') {
-                location.href = response['url'];
-            } else if(form_name == 'post') {
-                $(".well:first").before("<div class='well'><h5>" + response['post']['user'] +
-                                         ": <small> " + response['post']['created_at']['date'] + "</small></h5>" +
-                                         response['post']['post'] + "</div>");
-                $(".well.empty").remove();
-            }
-        }, "json");
+        if(form_name == 'post' && values['post[post]'].trim() == "") {
+            var alert_error = $('.alert-error');
+            alert_error.attr('style','display:true;');
+            alert_error.text("Сообщение не может быть пустым.");
+        } else {
+            $.post(form.attr('action'), values, function(response){
+                if(response['error']){
+                    var input = $(response['id']);
+                    input.parent('div').addClass('error');
+                    input.next('span').text(response['error']);
+                } else if(form_name == 'user') {
+                    location.href = response['url'];
+                } else if(form_name == 'post') {
+                    $(".well:first").before("<div class='well'><h5>" + response['post']['user'] +
+                        ": <small> " + response['post']['created_at']['date'] + "</small></h5>" +
+                        response['post']['post'] + "</div>");
+                    $(".well.empty").remove();
+                }
+            }, "json");
+        }
     });
 
     function getFormValues(form){

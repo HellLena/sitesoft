@@ -33,6 +33,7 @@ class PostController extends Controller
             $em->flush();
 
             $response['post'] = array("user" => $user->getUsername(), "created_at" => $post->getCreatedAt(), "post" => $post->getPost());
+
             return new JsonResponse($response);
         } else {
             $em = $this->getDoctrine()->getEntityManager();
