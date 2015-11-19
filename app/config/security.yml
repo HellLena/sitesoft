@@ -18,11 +18,14 @@ security:
             pattern: ^/
             anonymous: ~
             provider: custom_provider
-#            form_login:
-#                login_path: loginAction
-#                check_path: checkAction
-#                csrf_provider: security.csrf.token_manager
-#                default_target_path: userRedirectAction
+            form_login:
+                login_path: /login
+                check_path: /login_check
+            remember_me:
+                key: '%secret%'
+                lifetime: 31536000
+                path: /
+                domain: ~
             logout:
                 path: /logout
                 target: /
@@ -34,3 +37,7 @@ security:
         default:
             anonymous: ~
             http_basic: ~
+
+    access_control:
+        - { path: ^/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/reg, role: IS_AUTHENTICATED_ANONYMOUSLY }

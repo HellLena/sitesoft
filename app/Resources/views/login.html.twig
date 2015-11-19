@@ -13,27 +13,29 @@
 {% block body %}
     <div class="span4"></div>
     <div class="span3">
+        {% if error %}
+            <div class="alert alert-error">
+                Вход в систему с указанными данными невозможен
+            </div>
+        {% endif %}
 
-        <div class="alert alert-error">
-            Вход в систему с указанными данными невозможен
-        </div>
-
-        <form action="" method="post" class="form-horizontal">
+        <form action="{{ path('login_check') }}" method="post" class="form-horizontal">
             <div class="control-group">
                 <b>Авторизация</b>
             </div>
             <div class="control-group">
-                <input type="text" id="inputLogin" name="username" placeholder="Логин" data-cip-id="inputLogin"
-                       autocomplete="off">
+                <input type="text" id="username" name="_username" value="{{ last_username }}" placeholder="Логин"
+                       data-cip-id="inputLogin" autocomplete="off">
             </div>
             <div class="control-group">
-                <input type="password" id="inputPassword" name="password" placeholder="Пароль"
+                <input type="password" id="password" name="_password" placeholder="Пароль"
                        data-cip-id="inputPassword">
             </div>
             <div class="control-group">
                 <label class="checkbox">
-                    <input type="checkbox" name="remember" value="1"> Запомнить меня
+                    <input type="checkbox" id="remember_me" name="_remember_me" checked /> Запомнить меня
                 </label>
+                <input type="hidden" name="_target_path" value="/" />
                 <button type="submit" class="btn btn-primary">Вход</button>
             </div>
         </form>

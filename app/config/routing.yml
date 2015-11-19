@@ -2,5 +2,11 @@ app:
     resource: "@AppBundle/Controller/"
     type:     annotation
 
+homepage:
+    path: /
+
+reg_success:
+    path: /reg_success
+
 logout:
     path: /logout

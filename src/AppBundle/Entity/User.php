@@ -21,7 +21,7 @@ class User implements UserInterface {
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank()
      * @Assert\Length(min=3)
      */
@@ -33,6 +33,12 @@ class User implements UserInterface {
      * @Assert\Length(min=7, groups={"registration"})
      */
     private $password;
+
+    /**
+     * @Assert\NotBlank()
+     * @Assert\Length(max = 4096)
+     */
+    private $plainPassword;
 
     /**
      * @ORM\OneToMany(targetEntity="Post", mappedBy="user_id")
@@ -55,8 +61,27 @@ class User implements UserInterface {
         $this->username = $username;
     }
 
-    public function setPassword($password){
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword($password)
+    {
+        $this->plainPassword = $password;
+    }
+
+    public function setPassword($password)
+    {
         $this->password = $password;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getPassword()
+    {
+        return $this->password;
     }
 
     /**
@@ -72,14 +97,6 @@ class User implements UserInterface {
     public function getSalt()
     {
         return;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getPassword()
-    {
-        return $this->password;
     }
 
     /**
